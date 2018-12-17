@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Video2Activity">
+
+    <!--<RelativeLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
+        <!--<VideoView-->
+            <!--android:id="@+id/my_video_view"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="300dp" />-->
+
+        <SeekBar
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/ProgressBar"
+            android:layout_marginBottom="20dp"/>
+            <!--android:layout_alignBottom="@id/my_video_view"-->
+            <!--/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewCurrent"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="15sp"/>-->
+
+        <!--<TextView-->
+            <!--android:id="@+id/textViewTotal"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textSize="15sp"-->
+            <!--android:layout_alignParentRight="true"/>-->
+
+    <!--</RelativeLayout>-->
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolBar"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@color/colorPrimary">
+
+        <VideoView
+        android:id="@+id/my_video_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    </android.support.v7.widget.Toolbar>
+
+</FrameLayout>
+

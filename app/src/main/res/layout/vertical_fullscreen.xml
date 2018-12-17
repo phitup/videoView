@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/layoutFilm"
+    android:background="#333333">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/my_video_view1"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/mediaController"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <SeekBar
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:id="@+id/ProgressBar"
+        android:layout_marginBottom="20dp"
+        android:layout_gravity="bottom"
+        />
+
+    <TextView
+        android:id="@+id/textViewCurrent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|start"
+        android:text="__"
+        android:layout_marginLeft="5dp"
+        android:textColor="#FFFFFF"
+        android:textSize="15sp"/>
+
+    <ImageView
+        android:id="@+id/ImgPlay"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:src="@android:drawable/ic_media_play"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/custom_imageviewplay"/>
+
+    <TextView
+        android:id="@+id/textViewTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15sp"
+        android:layout_marginRight="5dp"
+        android:text="__"
+        android:textColor="#FFFFFF"
+        android:layout_gravity="right|bottom"/>
+
+    <ImageView
+        android:id="@+id/ImgPause"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:src="@android:drawable/ic_media_pause"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:background="@drawable/custom_imageviewplay"/>
+
+    </FrameLayout>
+</FrameLayout>

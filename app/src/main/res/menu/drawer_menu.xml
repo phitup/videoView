@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/item_a"
+        android:checkable="true"
+        android:icon="@drawable/cart"
+        android:title="Action A"
+        />
+
+    <item
+        android:id="@+id/item_b"
+        android:checkable="true"
+        android:icon="@drawable/cart"
+        android:title="Action B"
+        />
+
+    <item
+        android:id="@+id/item_c"
+        android:checkable="true"
+        android:icon="@drawable/cart"
+        android:title="Action C"
+        />
+
+    <item
+        android:id="@+id/item_d"
+        android:checkable="true"
+        android:icon="@drawable/cart"
+        android:title="Action D"
+        />
+
+</menu>
