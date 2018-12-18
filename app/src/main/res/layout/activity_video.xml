@@ -6,17 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".VideoActivity">
 
-    <VideoView
-        android:id="@+id/videoView"
-        android:layout_width="match_parent"
-        android:layout_height="300dp"/>
+    <TextView
+        android:id="@+id/textViewTitleSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng Nhập"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:textSize="30sp"/>
 
-
-
-    <FrameLayout
-        android:id="@+id/videoViewWrapper"
+    <EditText
+        android:id="@+id/editTextUsername"
+        android:layout_below="@id/textViewTitleSignIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
-    </FrameLayout>
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:layout_margin="20dp"
+        android:hint="Username"/>
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_below="@id/editTextUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="20dp"
+        android:inputType="textPassword"
+        android:layout_margin="20dp"
+        android:hint="Password"/>
+
+    <TextView
+        android:id="@+id/textViewSignup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Chưa có tài khoản"
+        android:textStyle="italic"
+        android:layout_below="@id/editTextPassword"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"/>
+
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="20dp"
+        android:layout_below="@id/textViewSignup"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đăng Nhập"/>
+
 </RelativeLayout>

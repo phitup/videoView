@@ -1,109 +1,108 @@
 package com.example.phitup.baitap;
 
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
-import android.os.Handler;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ProgressBar;
-import android.widget.SeekBar;
-import android.widget.TextView;
-import android.widget.VideoView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.HashMap;
 
 public class Video2Activity extends AppCompatActivity {
 
-    SeekBar mSeekBar;
-    VideoView mVideoView, mVideoView1;
-    Handler mHandler = new Handler();
-    Utilities utils;
-    Toolbar toolbar;
+    EditText edtUsernameSignUp, edtiPasswordSignUp, edtConfirmPasswordSignUp;
+    Button btnSignUp;
+    ProgressDialog mProgressDialog;
+
+    private DatabaseReference mDatabase;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video2);
 
-//        txtCurrent = findViewById(R.id.textViewCurrent);
-//        txtTotal = findViewById(R.id.textViewTotal);
+        AnhXa();
 
-        mSeekBar = findViewById(R.id.ProgressBar);
-        mSeekBar.setProgress(0);
-        mSeekBar.setMax(100);
-        mSeekBar.setVisibility(View.INVISIBLE);
-        toolbar = findViewById(R.id.toolBar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        mVideoView = findViewById(R.id.my_video_view);
-        mVideoView.setVideoPath("android.resource://"+getPackageName()+"/"+R.raw.demo);
-        mVideoView.start();
-
-        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                mHandler.removeCallbacks(updateTimeTask);
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                mHandler.removeCallbacks(updateTimeTask);
-                int totalDuration = mVideoView.getDuration();
-                int currentPosition = utils.progressToTimer(mSeekBar.getProgress(),
-                        totalDuration);
-
-                // forward or backward to certain seconds
-                mVideoView.seekTo(currentPosition);
-
-                // update timer progress again
-                updateProgressBar();
+            public void onClick(View view) {
+                String email = edtUsernameSignUp.getText().toString();
+                String password = edtiPasswordSignUp.getText().toString();
+                String confirmPassword = edtConfirmPasswordSignUp.getText().toString();
+                if(email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
+                    Toast.makeText(Video2Activity.this, "Yêu cầu điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                }else if(password.equals(confirmPassword)){
+                    mProgressDialog.setTitle("Đăng Ký");
+                    mProgressDialog.setMessage("Hệ thống đang xử lý vui lòng chờ");
+                    mProgressDialog.setCanceledOnTouchOutside(false);
+                    mProgressDialog.show();
+                    DangKy(email, password);
+                }else{
+                    Toast.makeText(Video2Activity.this, "Mật Khẩu không khớp", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-        utils = new Utilities();
-
-        mVideoView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                setContentView(R.layout.vertical_fullscreen);
-                mVideoView1 = findViewById(R.id.my_video_view1);
-                mVideoView1.setVideoPath("android.resource://"+getPackageName()+"/"+R.raw.demo);
-                mVideoView1.start();
-
-                return true;
-            }
-        });
-//        mVideoView.start();
-
-        updateProgressBar();
-
     }
 
-    private void updateProgressBar() {
-        mHandler.postDelayed(updateTimeTask, 100);
+    private void DangKy(final String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+
+                            FirebaseUser current_user = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid = current_user.getUid();
+                            mDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+
+                            HashMap<String, String> userMap = new HashMap<>();
+                            userMap.put("name", email);
+                            userMap.put("image", "default");
+
+                            mDatabase.setValue(userMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if(task.isSuccessful()){
+                                        mProgressDialog.dismiss();
+                                        Toast.makeText(Video2Activity.this, "Đăng Ký thành công", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(Video2Activity.this, VideoActivity.class));
+                                        finish();
+                                    }
+                                }
+                            });
+
+                        } else {
+                            mProgressDialog.dismiss();
+                            // If sign in fails, display a message to the user.
+                            Toast.makeText(Video2Activity.this, "Đăng Ký thất bại",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
     }
 
-    private Runnable updateTimeTask = new Runnable() {
-        @Override
-        public void run() {
-            long totalDuration = mVideoView.getDuration();
-            long currentDuration = mVideoView.getCurrentPosition();
-            int progress = (utils.getProgressPercentage(currentDuration,
-                    totalDuration));
-//            String Current = utils.milliSecondsToTimer(currentDuration);
-//            String Total = utils.milliSecondsToTimer(totalDuration);
-//            txtCurrent.setText(Current);
-//            txtTotal.setText(Total);
-            mSeekBar.setProgress(progress);
-            mHandler.postDelayed(this, 100);
-        }
-    };
+    private void AnhXa() {
+        edtUsernameSignUp = findViewById(R.id.editTextUsernameSignUp);
+        edtiPasswordSignUp = findViewById(R.id.editTextPasswordSignUp);
+        edtConfirmPasswordSignUp = findViewById(R.id.editTextConfirmPasswordSignUp);
+        btnSignUp = findViewById(R.id.btnSignUp);
+        mAuth = FirebaseAuth.getInstance();
+        mProgressDialog = new ProgressDialog(this);
+    }
+
 }
